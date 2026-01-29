@@ -10,6 +10,8 @@ import errorHandler from './middlewares/error-handler.js';
 import categoriesRouter from './routes/categories.routes.js';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './swagger.js';
+import { requireAuth } from './middlewares/require-auth.js';
+import authRouter from './routes/auth.routes.js';
 
 const app = express();
 
@@ -29,7 +31,8 @@ app.get('/health', (_req, res) => {
   res.status(200).json({ status: 'ok' });
 });
 
-app.use('/api/v1/products', productsRouter);
+app.use('/api/v1/products', requireAuth, productsRouter);
+app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/suppliers', suppliersRouter);
 
 app.use(notFound);
